@@ -1,0 +1,54 @@
+{
+    "type": "object",
+    "title": "Contact schema",
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "_nested_relationships": ["emails", "places", "phone_numbers"],
+    "properties": {
+        "id": {
+            "_db_settings": {
+                "required": true,
+                "type": "id_field",
+                "primary_key": true
+            }
+        },
+        "name_title": {
+            "_db_settings": {
+                "required": false,
+                "type": "text"
+            }
+        },
+        "name_first": {
+            "_db_settings": {
+                "required": false,
+                "type": "text"
+            }
+        },
+        "name_last": {
+            "_db_settings": {
+                "required": false,
+                "type": "text"
+            }
+        },
+        "phone_numbers": {
+            "_db_settings": {
+                "type": "relationship",
+                "document": "Phone",
+                "backref_name": "contact"
+            }
+        },
+        "emails": {
+            "_db_settings": {
+                "type": "relationship",
+                "document": "Email",
+                "backref_name": "contact"
+            }
+        },
+        "places": {
+            "_db_settings": {
+                "type": "relationship",
+                "document": "Place",
+                "backref_name": "contact"
+            }
+        },
+    }
+}    

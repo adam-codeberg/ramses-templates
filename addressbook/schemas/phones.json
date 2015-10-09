@@ -1,0 +1,39 @@
+{
+    "type": "object",
+    "title": "Phone schema",
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "_nested_relationships": ["destination_type"],
+    "properties": {
+        "id": {
+            "_db_settings": {
+                "required": true,
+                "type": "id_field",
+                "primary_key": true
+            }
+        },
+        "phone_number": {
+            "_db_settings": {
+                "required": false,
+                "type": "text"
+            }
+        },
+        "fk_contact_id": {
+            "_db_settings": {
+                "type": "foreign_key",
+                "required": true,
+                "ref_document": "Contact",
+                "ref_column": "contact.id",
+                "ref_column_type": "id_field" 
+            }
+        },
+        "fk_destination_type": {
+            "_db_settings": {
+                "type": "foreign_key",
+                "required": true,
+                "ref_document": "destination",
+                "ref_column": "destination.type",
+                "ref_column_type": "string"
+            }
+        }
+    }
+}    

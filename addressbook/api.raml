@@ -19,6 +19,26 @@ securitySchemes:
             cookie_name: ramses_auth_tkt
             http_only: 'true'
 securedBy: [x_ticket_auth]
+
+/contacts:
+    
+    displayName: Collection of contacts
+    get:
+        description: Get all contacts
+    post:
+        description: Insert a contacts
+        body:
+            application/json:
+                schema: !include schemas/contacts.json
+
+    /{id}:
+        displayName: A particular contact
+        get:
+            description: Get a particular contact
+        delete:
+            description: Delete a particular contact
+        patch:
+            description: Update a particular contact
             
 /emails:
     
@@ -100,24 +120,3 @@ securedBy: [x_ticket_auth]
             description: Delete a particular phone
         patch:
             description: Update a particular phone
-
-
-/contacts:
-    
-    displayName: Collection of contacts
-    get:
-        description: Get all contacts
-    post:
-        description: Insert a contacts
-        body:
-            application/json:
-                schema: !include schemas/contacts.json
-
-    /{id}:
-        displayName: A particular contact
-        get:
-            description: Get a particular contact
-        delete:
-            description: Delete a particular contact
-        patch:
-            description: Update a particular contact

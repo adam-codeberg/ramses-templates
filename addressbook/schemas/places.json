@@ -71,7 +71,7 @@
             "_db_settings": {
                 "type": "foreign_key",
                 "required": true,
-                "ref_document": "destination",
+                "ref_document": "Destination",
                 "ref_column": "destination.type",
                 "ref_column_type": "string"
             }

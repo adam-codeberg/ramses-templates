@@ -1,25 +1,3 @@
-#%RAML 0.8
----
-title: Addressbook template
-documentation:
-    - title: Addressbook template
-      content: |
-        Enter your description here
-baseUri: http://localhost:6543/api
-version: v0.1
-mediaType: application/json
-protocols: [HTTP]
-securitySchemes:
-    - x_ticket_auth:
-        description: Standard Pyramid Auth Ticket policy
-        type: x-Ticket
-        settings:
-            secret: auth_tkt_secret
-            hashalg: sha512
-            cookie_name: ramses_auth_tkt
-            http_only: 'true'
-securedBy: [x_ticket_auth]
-
 /contacts:
     
     displayName: Collection of contacts
@@ -39,27 +17,58 @@ securedBy: [x_ticket_auth]
             description: Delete a particular contact
         patch:
             description: Update a particular contact
+
+        /phones:
             
-/emails:
-    
-    displayName: Collection of emails
-    get:
-        description: Get all emails
-    post:
-        description: Insert a emails
-        body:
-            application/json:
-                schema: !include schemas/emails.json
+            displayName: Collection of phones
+            get:
+                description: Get all phones
+            post:
+                description: Insert a phones
+                body:
+                    application/json:
+                        schema: !include schemas/phones.json
+        
+            /{id}:
+                displayName: A particular phone
+                get:
+                    description: Get a particular phone
+                delete:
+                    description: Delete a particular phone
+                patch:
+                    description: Update a particular phone
+                   
+        /emails:
+            
+            displayName: Collection of emails
+            get:
+                description: Get all emails
+            post:
+                description: Insert a emails
+                body:
+                    application/json:
+                        schema: !include schemas/emails.json
 
-    /{id}:
-        displayName: A particular email
-        get:
-            description: Get a particular email
-        delete:
-            description: Delete a particular email
-        patch:
-            description: Update a particular email
-
+        /places:
+            
+            displayName: Collection of places
+            get:
+                description: Get all places
+            post:
+                description: Insert a places
+                body:
+                    application/json:
+                        schema: !include schemas/places.json
+        
+            /{id}:
+                displayName: A particular place
+                get:
+                    description: Get a particular place
+                delete:
+                    description: Delete a particular place
+                patch:
+                    description: Update a particular place
+                    
 /destinations:
     
     displayName: Collection of destinations
@@ -79,44 +88,3 @@ securedBy: [x_ticket_auth]
             description: Delete a particular destination
         patch:
             description: Update a particular destination
-
-
-/places:
-    
-    displayName: Collection of places
-    get:
-        description: Get all places
-    post:
-        description: Insert a places
-        body:
-            application/json:
-                schema: !include schemas/places.json
-
-    /{id}:
-        displayName: A particular place
-        get:
-            description: Get a particular place
-        delete:
-            description: Delete a particular place
-        patch:
-            description: Update a particular place
-
-/phones:
-    
-    displayName: Collection of phones
-    get:
-        description: Get all phones
-    post:
-        description: Insert a phones
-        body:
-            application/json:
-                schema: !include schemas/phones.json
-
-    /{id}:
-        displayName: A particular phone
-        get:
-            description: Get a particular phone
-        delete:
-            description: Delete a particular phone
-        patch:
-            description: Update a particular phone

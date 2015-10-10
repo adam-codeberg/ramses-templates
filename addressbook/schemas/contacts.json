@@ -49,6 +49,6 @@
                 "document": "Place",
                 "backref_name": "contact"
             }
-        },
+        }
     }
 }    

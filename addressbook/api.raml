@@ -1,3 +1,25 @@
+#%RAML 0.8
+---
+title: Home
+documentation:
+    - title: Home
+      content: |
+        Addressbook
+baseUri: http://localhost:6543/api
+version: v0.1
+mediaType: application/json
+protocols: [HTTP]
+securitySchemes:
+    - x_ticket_auth:
+        description: Standard Pyramid Auth Ticket policy
+        type: x-Ticket
+        settings:
+            secret: auth_tkt_secret
+            hashalg: sha512
+            cookie_name: ramses_auth_tkt
+            http_only: 'true'
+securedBy: [x_ticket_auth]
+
 /contacts:
     
     displayName: Collection of contacts

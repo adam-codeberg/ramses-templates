@@ -1,0 +1,336 @@
+#%RAML 0.8
+---
+title: Software Licensing API
+documentation:
+    - title: Home
+      content: |
+        Software Licensing for internal useage.
+baseUri: http://localhost:6543/api
+version: v0.1
+mediaType: application/json
+protocols: [HTTP]
+securitySchemes:
+    - x_token_auth:
+        description: Authorization header token policy
+        type: x-ApiKey
+    - x_ticket_auth:
+        description: Standard Pyramid Auth Ticket policy
+        type: x-Ticket
+        settings:
+            secret: auth_tkt_secret
+            hashalg: sha512
+            cookie_name: ramses_auth_tkt
+            http_only: true
+    - item_owner_acl:
+        description: ACL that allows everyone to read, authenticated to create and item owners to edit item
+        type: x-ACL
+        settings:
+            collection: |
+                allow g:admin all
+                allow everyone view,options
+                allow authenticated create
+            item: |
+                allow g:admin all
+                allow authenticated view,options
+    - user_self_acl:
+        description: ACL that allows everyone to read, authenticated to create and owner to edit
+        type: x-ACL
+        settings:
+            collection: |
+                allow g:admin all
+                allow authenticated view,options
+            item: |
+                allow g:admin all
+                allow authenticated view,options
+    - public_acl:
+        description: ACL that allows everyone to read, authenticated to create and owner to edit
+        type: x-ACL
+        settings:
+            collection: |
+                allow g:admin all
+                allow everyone view,options
+            item: |
+                allow g:admin all
+                allow everyone view,options
+                
+securedBy: [x_ticket_auth]
+
+/contacts:
+    securedBy: [user_self_acl]
+    displayName: Collection of contacts
+    get:
+        description: Get all contacts
+    post:
+        description: Insert a contacts
+        body:
+            application/json:
+                schema: !include schemas/contacts.json
+
+    /{id}:
+        displayName: A particular contact
+        get:
+            description: Get a particular contact
+        patch:
+        put:
+            description: Update a particular contact
+        delete:
+            description: Delete a particular contact
+
+        /emails:
+            
+            displayName: Collection of emails
+            get:
+                description: Get all emails
+            post:
+                description: Insert a emails
+                body:
+                    application/json:
+                        schema: !include schemas/emails.json
+                        
+            /{id}:
+                displayName: A particular email
+                get:
+                    description: Get a particular email
+                delete:
+                    description: Delete a particular email
+                patch:
+                    description: Update a particular email
+            
+        /phones:
+            
+            displayName: Collection of phones
+            get:
+                description: Get all phones
+            post:
+                description: Insert a phones
+                body:
+                    application/json:
+                        schema: !include schemas/phones.json
+                        
+            /{id}:
+                displayName: A particular phone
+                get:
+                    description: Get a particular phone
+                delete:
+                    description: Delete a particular phone
+                patch:
+                    description: Update a particular phone
+
+                /destinations:
+                        
+                        displayName: Collection of destinations
+                        get:
+                            description: Get all destinations
+                        post:
+                            description: Insert a destinations
+                            body:
+                                application/json:
+                                    schema: !include schemas/destinations.json
+                    
+                        /{type}:
+                            displayName: A particular destination
+                            get:
+                                description: Get a particular destination
+                            delete:
+                                description: Delete a particular destination
+                            patch:
+                                description: Update a particular destination       
+                                
+        /places:
+        
+            displayName: Collection of places
+            get:
+                description: Get all places
+            post:
+                description: Insert a places
+                body:
+                    application/json:
+                        schema: !include schemas/places.json
+            
+                /{id}:
+                    displayName: A particular place
+                    get:
+                        description: Get a particular place
+                    delete:
+                        description: Delete a particular place
+                    patch:
+                        description: Update a particular place
+                        
+                    /destinations:
+                        
+                        displayName: Collection of destinations
+                        get:
+                            description: Get all destinations
+                        post:
+                            description: Insert a destinations
+                            body:
+                                application/json:
+                                    schema: !include schemas/destinations.json
+                    
+                        /{type}:
+                            displayName: A particular destination
+                            get:
+                                description: Get a particular destination
+                            delete:
+                                description: Delete a particular destination
+                            patch:
+                                description: Update a particular destination
+        /orders:
+        
+            displayName: Collection of orders
+            get:
+                description: Get all orders
+            post:
+                description: Insert a orders
+                body:
+                    application/json:
+                        schema: !include schemas/orders.json
+            
+                /{id}:
+                    displayName: A particular order
+                    get:
+                        description: Get a particular order
+                    delete:
+                        description: Delete a particular order
+                    patch:
+                        description: Update a particular order
+                        
+                    /sales:
+                        
+                        displayName: Collection of sales
+                        get:
+                            description: Get all sales
+                        post:
+                            description: Insert a sales
+                            body:
+                                application/json:
+                                    schema: !include schemas/sales.json
+                    
+                        /{id}:
+                            displayName: A particular sale
+                            get:
+                                description: Get a particular sale
+                            delete:
+                                description: Delete a particular sale
+                            patch:
+                                description: Update a particular sale
+                                
+/payments:
+    securedBy: [user_self_acl]
+    displayName: Collection of payments
+    get:
+        description: Get all payments
+    post:
+        description: Insert a payments
+        body:
+            application/json:
+                schema: !include schemas/payments.json
+
+    /{id}:
+        displayName: A particular payment
+        get:
+            description: Get a particular payment
+        delete:
+            description: Delete a particular payment
+        patch:
+            description: Update a particular payment    
+
+/paymentmethods:
+    securedBy: [user_self_acl]
+    displayName: Collection of paymentmethods
+    get:
+        description: Get all paymentmethods
+    post:
+        description: Insert a paymentmethods
+        body:
+            application/json:
+                schema: !include schemas/paymentmethods.json
+
+    /{id}:
+        displayName: A particular paymentmethod
+        get:
+            description: Get a particular paymentmethod
+        delete:
+            description: Delete a particular paymentmethod
+        patch:
+            description: Update a particular paymentmethod    
+                 
+/destinations:
+    securedBy: [user_self_acl]
+    displayName: Collection of destinations
+    get:
+        description: Get all destinations
+    post:
+        description: Insert a destinations
+        body:
+            application/json:
+                schema: !include schemas/destinations.json
+
+    /{type}:
+        displayName: A particular destination
+        get:
+            description: Get a particular destination
+        delete:
+            description: Delete a particular destination
+        patch:
+            description: Update a particular destination             
+
+/products:
+    securedBy: [public_acl]
+    displayName: Collection of products
+    get:
+        description: Get all products
+    post:
+        description: Insert a products
+        body:
+            application/json:
+                schema: !include schemas/products.json
+
+    /{name}:
+        displayName: A particular product
+        get:
+            description: Get a particular product
+        delete:
+            description: Delete a particular product
+        patch:
+            description: Update a particular product
+            
+/currencys:
+    securedBy: [user_self_acl]
+    displayName: Collection of currencys
+    get:
+        description: Get all currencys
+    post:
+        description: Insert a currencys
+        body:
+            application/json:
+                schema: !include schemas/currencys.json
+
+    /{symbol}:
+        displayName: A particular currency
+        get:
+            description: Get a particular currency
+        delete:
+            description: Delete a particular currency
+        patch:
+            description: Update a particular destination
+            
+/memberships:
+    securedBy: [user_self_acl]
+    displayName: Collection of memberships
+    get:
+        description: Get all memberships
+    post:
+        description: Insert a memberships
+        body:
+            application/json:
+                schema: !include schemas/memberships.json
+
+    /{key}:
+        displayName: A particular membership
+        get:
+            description: Get a particular membership
+        delete:
+            description: Delete a particular membership
+        patch:
+            description: Update a particular destination    

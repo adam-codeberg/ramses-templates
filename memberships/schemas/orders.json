@@ -1,0 +1,62 @@
+{
+    "type": "object",
+    "title": "Order schema",
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "_public_fields": [""],
+    "_nested_relationships": ["payments"],
+    "properties": {
+        "id": {
+            "_db_settings": {
+                "required": true,
+                "type": "id_field",
+                "primary_key": true
+            }
+        },
+        "price_change": {
+            "_db_settings": {
+                "required": true,
+                "type": "id_field"
+            }
+        },
+        "payments": {
+            "_db_settings": {
+                "type": "relationship",
+                "document": "Payment",
+                "backref_name": "order",
+            }
+        },
+        "fk_contact_id": {
+            "_db_settings": {
+                "type": "foreign_key",
+                "required": true,
+                "ref_document": "Contact",
+                "ref_column": "contact.id",
+                "ref_column_type": "id_field" 
+            }
+        },
+        "fk_product_id": {
+            "_db_settings": {
+                "type": "foreign_key",
+                "required": true,
+                "ref_document": "Product",
+                "ref_column": "product.name",
+                "ref_column_type": "string"
+            }
+        },
+        "sent": {
+            "_db_settings": {
+                "required": true,
+                "type": "datetime",
+                "default": "{{datetime.datetime.now}}"
+            }
+        },
+        "payment_status": {
+            "_db_settings": {
+                "required": true,
+                "type": "choice",
+                "choices": ["pending", "due", "overdue", "paid", "canceled"],
+                "default": "pending"
+            }
+        }
+    }
+}    

@@ -2,6 +2,7 @@
     "type": "object",
     "title": "Destination schema",
     "$schema": "http://json-schema.org/draft-04/schema",
+    "_public_fields": [""],
     "properties": {
         "id": {
             "_db_settings": {

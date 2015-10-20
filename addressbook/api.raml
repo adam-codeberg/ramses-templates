@@ -1,15 +1,18 @@
 #%RAML 0.8
 ---
-title: Home
+title: Software Licensing API
 documentation:
     - title: Home
       content: |
-        Addressbook
+        Software Licensing for internal useage.
 baseUri: http://localhost:6543/api
 version: v0.1
 mediaType: application/json
 protocols: [HTTP]
 securitySchemes:
+    - x_token_auth:
+        description: Authorization header token policy
+        type: x-ApiKey
     - x_ticket_auth:
         description: Standard Pyramid Auth Ticket policy
         type: x-Ticket
@@ -17,11 +20,43 @@ securitySchemes:
             secret: auth_tkt_secret
             hashalg: sha512
             cookie_name: ramses_auth_tkt
-            http_only: 'true'
+            http_only: true
+    - item_owner_acl:
+        description: ACL that allows everyone to read, authenticated to create and item owners to edit item
+        type: x-ACL
+        settings:
+            collection: |
+                allow g:admin all
+                allow everyone view,options
+                allow authenticated create
+            item: |
+                allow g:admin all
+                allow authenticated view,options
+    - user_self_acl:
+        description: ACL that allows everyone to read, authenticated to create and owner to edit
+        type: x-ACL
+        settings:
+            collection: |
+                allow g:admin all
+                allow authenticated view,options
+            item: |
+                allow g:admin all
+                allow authenticated view,options
+    - public_acl:
+        description: ACL that allows everyone to read, authenticated to create and owner to edit
+        type: x-ACL
+        settings:
+            collection: |
+                allow g:admin all
+                allow everyone view,options
+            item: |
+                allow g:admin all
+                allow everyone view,options
+                
 securedBy: [x_ticket_auth]
 
 /contacts:
-    
+    securedBy: [user_self_acl]
     displayName: Collection of contacts
     get:
         description: Get all contacts
@@ -35,31 +70,12 @@ securedBy: [x_ticket_auth]
         displayName: A particular contact
         get:
             description: Get a particular contact
+        patch:
+        put:
+            description: Update a particular contact
         delete:
             description: Delete a particular contact
-        patch:
-            description: Update a particular contact
 
-        /phones:
-            
-            displayName: Collection of phones
-            get:
-                description: Get all phones
-            post:
-                description: Insert a phones
-                body:
-                    application/json:
-                        schema: !include schemas/phones.json
-        
-            /{id}:
-                displayName: A particular phone
-                get:
-                    description: Get a particular phone
-                delete:
-                    description: Delete a particular phone
-                patch:
-                    description: Update a particular phone
-                   
         /emails:
             
             displayName: Collection of emails
@@ -70,9 +86,58 @@ securedBy: [x_ticket_auth]
                 body:
                     application/json:
                         schema: !include schemas/emails.json
-
-        /places:
+                        
+            /{id}:
+                displayName: A particular email
+                get:
+                    description: Get a particular email
+                delete:
+                    description: Delete a particular email
+                patch:
+                    description: Update a particular email
             
+        /phones:
+            
+            displayName: Collection of phones
+            get:
+                description: Get all phones
+            post:
+                description: Insert a phones
+                body:
+                    application/json:
+                        schema: !include schemas/phones.json
+                        
+            /{id}:
+                displayName: A particular phone
+                get:
+                    description: Get a particular phone
+                delete:
+                    description: Delete a particular phone
+                patch:
+                    description: Update a particular phone
+
+                /destinations:
+                        
+                        displayName: Collection of destinations
+                        get:
+                            description: Get all destinations
+                        post:
+                            description: Insert a destinations
+                            body:
+                                application/json:
+                                    schema: !include schemas/destinations.json
+                    
+                        /{type}:
+                            displayName: A particular destination
+                            get:
+                                description: Get a particular destination
+                            delete:
+                                description: Delete a particular destination
+                            patch:
+                                description: Update a particular destination       
+                                
+        /places:
+        
             displayName: Collection of places
             get:
                 description: Get all places
@@ -81,18 +146,38 @@ securedBy: [x_ticket_auth]
                 body:
                     application/json:
                         schema: !include schemas/places.json
-        
-            /{id}:
-                displayName: A particular place
-                get:
-                    description: Get a particular place
-                delete:
-                    description: Delete a particular place
-                patch:
-                    description: Update a particular place
+            
+                /{id}:
+                    displayName: A particular place
+                    get:
+                        description: Get a particular place
+                    delete:
+                        description: Delete a particular place
+                    patch:
+                        description: Update a particular place
+                        
+                    /destinations:
+                        
+                        displayName: Collection of destinations
+                        get:
+                            description: Get all destinations
+                        post:
+                            description: Insert a destinations
+                            body:
+                                application/json:
+                                    schema: !include schemas/destinations.json
                     
+                        /{type}:
+                            displayName: A particular destination
+                            get:
+                                description: Get a particular destination
+                            delete:
+                                description: Delete a particular destination
+                            patch:
+                                description: Update a particular destination   
+                 
 /destinations:
-    
+    securedBy: [user_self_acl]
     displayName: Collection of destinations
     get:
         description: Get all destinations
@@ -102,11 +187,11 @@ securedBy: [x_ticket_auth]
             application/json:
                 schema: !include schemas/destinations.json
 
-    /{id}:
+    /{type}:
         displayName: A particular destination
         get:
             description: Get a particular destination
         delete:
             description: Delete a particular destination
         patch:
-            description: Update a particular destination
+            description: Update a particular destination   

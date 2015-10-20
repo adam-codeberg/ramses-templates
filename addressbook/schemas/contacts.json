@@ -2,13 +2,25 @@
     "type": "object",
     "title": "Contact schema",
     "$schema": "http://json-schema.org/draft-04/schema",
-    "_nested_relationships": ["emails", "places", "phone_numbers"],
+    "_auth_fields": ["emails", "name_title", "name_first", 
+                    "name_last", "phones", "places", "orders"],
+    "_public_fields": [""],
+    "_hidden_fields": [""],
+    "_nested_relationships": ["phones", "emails", "places", "orders", "payments"],
+    "_nesting_depth": 6,
     "properties": {
         "id": {
             "_db_settings": {
                 "required": true,
                 "type": "id_field",
                 "primary_key": true
+            }
+        },
+        "emails": {
+            "_db_settings": {
+                "type": "relationship",
+                "document": "Email",
+                "backref_name": "contact"
             }
         },
         "name_title": {
@@ -29,17 +41,10 @@
                 "type": "text"
             }
         },
-        "phone_numbers": {
+        "phones": {
             "_db_settings": {
                 "type": "relationship",
                 "document": "Phone",
-                "backref_name": "contact"
-            }
-        },
-        "emails": {
-            "_db_settings": {
-                "type": "relationship",
-                "document": "Email",
                 "backref_name": "contact"
             }
         },
@@ -48,6 +53,13 @@
                 "type": "relationship",
                 "document": "Place",
                 "backref_name": "contact"
+            }
+        },
+        "status": {
+            "_db_settings": {
+                "type": "choice",
+                "choices": ["active", "inactive", "canceled", "terminated"],
+                "default": "inactive"
             }
         }
     }
